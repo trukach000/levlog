@@ -2,7 +2,6 @@ package levlog
 
 import (
 	"log"
-	"io"
 )
 
 type debugLevel struct {
@@ -16,8 +15,11 @@ var (
     FATAL debugLevel =  debugLevel{"FATAL",3}
 )
 
-func SetOutput(w io.Writer){
-	log.SetOutput(w)
+var writer RotateWriter
+
+func SetOutput(filename string){
+	RotateWriter := NewRotateWrite(filename)
+	log.SetOutput(RotateWriter)
 }
 
 var DEBUG_LEVEL debugLevel = DEBUG 
