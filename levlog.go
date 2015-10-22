@@ -19,9 +19,10 @@ var (
 var writer *RotateWriter
 
 func SetOutput(filename string){
-	writer,err := NewRotateWrite(filename)
+	var err error
+	writer,err = NewRotateWrite(filename)
 	if err != nil{
-		F(err)
+		panic(err)
 	}
 	log.SetOutput(writer)
 	TimeRotating()

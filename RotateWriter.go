@@ -14,7 +14,7 @@ type RotateWriter struct {
 
 // Make a new RotateWriter. Return nil if error occurs during setup.
 func NewRotateWrite(filename string) (*RotateWriter, error) {
-    w := &RotateWriter{filename: filename+".log"}
+    w := &RotateWriter{filename: filename}
     err := w.Rotate()
     if err != nil {
         return nil,err
