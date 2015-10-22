@@ -14,7 +14,7 @@ type RotateWriter struct {
 
 // Make a new RotateWriter. Return nil if error occurs during setup.
 func NewRotateWrite(filename string) (*RotateWriter, error) {
-    w := &RotateWriter{filename: filename}
+    w := &RotateWriter{filename: filename+".log"}
     err := w.Rotate()
     if err != nil {
         return nil,err
@@ -39,7 +39,7 @@ func (w *RotateWriter) Rotate() (err error) {
         err = w.fp.Close()
         w.fp = nil
         if err != nil {
-            return
+            return err
         }
     }
     // Rename dest file if it already exists
@@ -52,6 +52,10 @@ func (w *RotateWriter) Rotate() (err error) {
     }
 
     // Create a file.
-    w.fp, err = os.Create(w.filename)
-    return err
+    newf, err := os.Create(w.filename)
+    if err != nil{
+    	return err
+    }
+    w.fp = newf
+    return nil
 }
