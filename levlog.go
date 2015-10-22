@@ -21,7 +21,7 @@ var writer *RotateWriter
 func SetOutput(filename string){
 	writer = NewRotateWrite(filename)
 	log.SetOutput(writer)
-	TimeRotating(time.After(time.Minute * 1))
+	TimeRotating()
 }
 
 var DEBUG_LEVEL debugLevel = DEBUG 
@@ -34,15 +34,18 @@ func rotate()(error){
 	return nil
 }
 
-func TimeRotating(t <-chan time.Time){
-	go func (t <-chan time.Time){
+func TimeRotating(){
+	go func (){
 		for{
 			select{
-				case <-t:
-					rotate()
+				case <-time.After(time.Minute * 1):
+					err := rotate()
+					if err != nil{
+						panic(err)
+					}
 			}
 		}
-	}(t)
+	}()
 }
 
 func D(v ...interface{}){

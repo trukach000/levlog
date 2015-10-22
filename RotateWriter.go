@@ -47,11 +47,11 @@ func (w *RotateWriter) Rotate() (err error) {
     if err == nil {
         err = os.Rename(w.filename, w.filename+"."+time.Now().Format(time.RFC3339))
         if err != nil {
-            return
+            return err
         }
     }
 
     // Create a file.
     w.fp, err = os.Create(w.filename)
-    return
+    return err
 }
