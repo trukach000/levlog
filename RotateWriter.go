@@ -13,13 +13,13 @@ type RotateWriter struct {
 }
 
 // Make a new RotateWriter. Return nil if error occurs during setup.
-func NewRotateWrite(filename string) *RotateWriter {
+func NewRotateWrite(filename string) (*RotateWriter, error) {
     w := &RotateWriter{filename: filename}
     err := w.Rotate()
     if err != nil {
-        return nil
+        return nil,err
     }
-    return w
+    return w, nil
 }
 
 // Write satisfies the io.Writer interface.
