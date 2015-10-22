@@ -2,6 +2,7 @@ package levlog
 
 import (
 	"log"
+	"time"
 )
 
 type debugLevel struct {
@@ -15,14 +16,34 @@ var (
     FATAL debugLevel =  debugLevel{"FATAL",3}
 )
 
-var writer RotateWriter
+var writer *RotateWriter
 
 func SetOutput(filename string){
-	RotateWriter := NewRotateWrite(filename)
-	log.SetOutput(RotateWriter)
+	writer = NewRotateWrite(filename)
+	log.SetOutput(writer)
+	TimeRotating(time.After(time.Minute * 1))
 }
 
 var DEBUG_LEVEL debugLevel = DEBUG 
+
+func rotate()(error){
+	if writer != nil{
+		err := writer.Rotate()
+		return err
+	}
+	return nil
+}
+
+func TimeRotating(t <-chan time.Time){
+	go func (t <-chan time.Time){
+		for{
+			select{
+				case <-t:
+					rotate()
+			}
+		}
+	}(t)
+}
 
 func D(v ...interface{}){
 	if DEBUG_LEVEL.id <= DEBUG.id{
