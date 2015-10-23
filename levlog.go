@@ -18,14 +18,14 @@ var (
 
 var writer *RotateWriter
 
-func SetOutput(filename string){
+func SetOutput(filename string, timeRotation time.Duration){
 	var err error
 	writer,err = NewRotateWrite(filename)
 	if err != nil{
 		panic(err)
 	}
 	log.SetOutput(writer)
-	TimeRotating()
+	TimeRotating(timeRotation)
 }
 
 var DEBUG_LEVEL debugLevel = DEBUG 
@@ -38,11 +38,11 @@ func rotate()(error){
 	return nil
 }
 
-func TimeRotating(){
+func TimeRotating(dur time.Duration){
 	go func (){
 		for{
 			select{
-				case <-time.After(time.Minute * 1):
+				case <-time.After(dur):
 					err := rotate()
 					if err != nil{
 						panic(err)
