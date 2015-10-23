@@ -3,6 +3,8 @@ package levlog
 import (
 	"log"
 	"time"
+	"os"
+	"path/filepath"
 )
 
 type debugLevel struct {
@@ -18,14 +20,14 @@ var (
 
 var writer *RotateWriter
 
-func SetOutput(filename string, timeRotation time.Duration){
+func SetOutput(filename string, timeRotation time.Duration,shutdownChannel chan bool){
 	var err error
 	writer,err = NewRotateWrite(filename)
 	if err != nil{
 		panic(err)
 	}
 	log.SetOutput(writer)
-	TimeRotating(timeRotation)
+	TimeRotating(timeRotation,shutdownChannel)
 }
 
 var DEBUG_LEVEL debugLevel = DEBUG 
@@ -38,8 +40,8 @@ func rotate()(error){
 	return nil
 }
 
-func TimeRotating(dur time.Duration){
-	go func (){
+func TimeRotating(dur time.Duration,shutdownChannel chan bool){
+	go func (shutdown chan bool){
 		for{
 			select{
 				case <-time.After(dur):
@@ -47,9 +49,24 @@ func TimeRotating(dur time.Duration){
 					if err != nil{
 						panic(err)
 					}
+				case <-shutdown:
+					return
 			}
 		}
-	}()
+	}(shutdownChannel)
+}
+
+func PanicLogInFile(v ...interface{}){
+	panicFileName := "." + string(filepath.Separator) + "logs" + string(filepath.Separator) + "panic.log"
+	f, err := os.OpenFile(panicFileName, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if err != nil {
+	    E("Error when open ",panicFileName,"for panic logging")
+	    return
+	}
+	defer f.Close()
+	
+	log.SetOutput(f)
+	log.Fatal(v)	
 }
 
 func D(v ...interface{}){
