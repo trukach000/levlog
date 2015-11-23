@@ -71,36 +71,36 @@ func PanicLogInFile(v ...interface{}){
 
 func D(v ...interface{}){
 	if DEBUG_LEVEL.id <= DEBUG.id{
-		log.Printf("(DEBUG): %s\n",v)
+		log.Printf("(DEBUG): %s\n",v...)
 	}
 }
 
 func E(v ...interface{}){
 	if DEBUG_LEVEL.id <= ERROR.id{
-		log.Printf("(ERROR): %s\n",v)
+		log.Printf("(ERROR): %s\n",v...)
 	}
 }
 
 func F(v ...interface{}){
 	if DEBUG_LEVEL.id <= FATAL.id{
-		log.Printf("(FATAL): %s\n",v)
+		log.Printf("(FATAL): %s\n",v...)
 	}
 }
 
 func DF(format string,v ...interface{}){
 	if DEBUG_LEVEL.id <= DEBUG.id{
-		log.Printf("(DEBUG): " + format+"\n",v)
+		log.Printf("(DEBUG): " + format+"\n",v...)
 	}
 }
 
 func EF(format string,v ...interface{}){
 	if DEBUG_LEVEL.id <= ERROR.id{
-		log.Printf("(ERROR): " + format+"\n",v)
+		log.Printf("(ERROR): " + format+"\n",v...)
 	}
 }
 
 func FF(format string,v ...interface{}){
 	if DEBUG_LEVEL.id <= FATAL.id{
-		log.Fatalf("(FATAL): " + format+"\n",v)
+		log.Fatalf("(FATAL): " + format+"\n",v...)
 	}
 }
