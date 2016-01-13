@@ -70,20 +70,29 @@ func PanicLogInFile(v ...interface{}){
 }
 
 func D(v ...interface{}){
+	nv := make([]interface{},0)
+	nv = append(nv,"(DEBUG): ")
+	nv = append(nv,v...)
 	if DEBUG_LEVEL.id <= DEBUG.id{
-		log.Printf("(DEBUG): %s\n",v...)
+		log.Println(nv...)
 	}
 }
 
 func E(v ...interface{}){
+	nv := make([]interface{},0)
+	nv = append(nv,"(ERROR): ")
+	nv = append(nv,v...)
 	if DEBUG_LEVEL.id <= ERROR.id{
-		log.Printf("(ERROR): %s\n",v...)
+		log.Println(nv...)
 	}
 }
 
 func F(v ...interface{}){
+	nv := make([]interface{},0)
+	nv = append(nv,"(FATAL): ")
+	nv = append(nv,v...)
 	if DEBUG_LEVEL.id <= FATAL.id{
-		log.Printf("(FATAL): %s\n",v...)
+		log.Println(nv...)
 	}
 }
 
