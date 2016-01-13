@@ -5,12 +5,14 @@ import (
 )
 
 func TestLevlog(t *testing.T) {
-	D("Test debug");
-	E("Test error");
-	F("Test fatal");
+	D("Test debug")
+	E("Test error")
+	F("Test fatal")
 }
 func TestLevlogFormat(t *testing.T) {
-	D("Format = %s","Test debug");
-	E("Format = %s","Test error");
-	F("Format = %s","Test fatal");
+	DF("Format = %s","Test debug")
+	EF("Format = %s","Test error")
+	FF("Format = %s","Test fatal")
+	x := 10
+	DF("Format = %d/%d",2,x)
 }
