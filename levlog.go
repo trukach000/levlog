@@ -110,6 +110,6 @@ func EF(format string,v ...interface{}){
 
 func FF(format string,v ...interface{}){
 	if DEBUG_LEVEL.id <= FATAL.id{
-		log.Fatalf("(FATAL): " + format+"\n",v...)
+		log.Printf("(FATAL): " + format+"\n",v...)
 	}
 }
